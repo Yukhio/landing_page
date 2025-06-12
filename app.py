@@ -19,14 +19,13 @@ USUARIOS_FILE = "usuarios.json"
 
 def cargar_usuarios():
     if os.path.exists(USUARIOS_FILE):
-        with open(USUARIOS_FILE, "r") as f:
+        with open(USUARIOS_FILE, "r", encoding="utf-8") as f:
             return json.load(f)
     return {}
 
 def guardar_usuarios(data):
-    with open(USUARIOS_FILE, "w") as f:
-        json.dump(data, f, indent=2)
-
+    with open(USUARIOS_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
 
 # Usuarios de ejemplo
 usuarios = cargar_usuarios()
