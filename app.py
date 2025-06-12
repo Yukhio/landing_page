@@ -5,13 +5,10 @@ from dateutil.relativedelta import relativedelta
 app = Flask(__name__)
 app.secret_key = 'clave-secreta-segura'  # necesaria para usar sesiones
 
-def inject_now():
-    return {'now': datetime.utcnow}
-
 # Usuarios de ejemplo
 usuarios = {
     "enrique": {
-        "password": "123456",
+        "password": "123",
         "nombre": "Enrique Yukhio Juárez Preciado",
         "foto": "img/perfil.jpeg",
         "puesto": "Desarrollador Full Stack",
@@ -37,6 +34,7 @@ def login():
 
         if user and user['password'] == password:
             session['username'] = username
+            session['show_welcome'] = True
             return redirect(url_for('perfil'))
         else:
             mensaje = 'Usuario o contraseña incorrectos.'
@@ -49,6 +47,7 @@ def perfil():
         return redirect(url_for('login'))
 
     user = usuarios[username]
+    mostrar_bienvenida = session.pop('show_welcome', False)
 
     hoy = date.today()
     fecha_nacimiento = datetime.strptime(user['fecha_nacimiento'], "%Y-%m-%d").date()
@@ -93,12 +92,16 @@ def perfil():
         "tiempo_trabajando": tiempo_trabajando,
         "tiempo_para_cumple": tiempo_para_cumple,
         "es_cumpleanios": es_cumple
-    })
+    }, mostrar_bienvenida=mostrar_bienvenida)
 
 @app.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('login'))
+
+@app.context_processor
+def inject_now():
+    return {'now': datetime.utcnow}
 
 if __name__ == '__main__':
     app.run(debug=True)

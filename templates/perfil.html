@@ -112,10 +112,56 @@
         .info-section a:hover {
             background-color: #0056b3;
         }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+                display: none;
+            }
+        }
     </style>
 </head>
 
 <body>
+    <a href="{{ url_for('logout') }}" style="
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        background-color: #dc3545;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        transition: background-color 0.3s ease;
+        " onmouseover="this.style.backgroundColor='#bb2d3b'" onmouseout="this.style.backgroundColor='#dc3545'">
+        Cerrar sesión
+    </a>
+
+    {% if mostrar_bienvenida %}
+    <div id="bienvenida" style="
+        text-align: center;
+        background-color: #d1e7dd;
+        color: #0f5132;
+        padding: 15px;
+        font-size: 18px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        animation: fadeOut 3s ease forwards;
+        ">
+        ¡Bienvenido, {{ person.nombre }}!
+    </div>
+    {% endif %}
+
     {% if person.es_cumpleanios %}
     <script>
         window.onload = () => {
