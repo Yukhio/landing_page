@@ -1,0 +1,24 @@
+{
+  "yukhio": {
+    "password": "123",
+    "nombre": "Enrique Yukhio JuÃ¡rez Preciado",
+    "foto": "img/perfil.jpeg",
+    "puesto": "Desarrollador Full Stack",
+    "ubicacion": "Colima, Colima, MÃ©xico",
+    "email": "yukhio.000@gmail.com",
+    "telefono": "+52 3121184818",
+    "fecha_nacimiento": "1999-12-08",
+    "inicio_trabajo": "2024-12-02"
+  },
+  "elpepe": {
+    "password": "123",
+    "nombre": "El pepe etesech",
+    "foto": "img/perfil.jpeg",
+    "puesto": "Programador",
+    "ubicacion": "Tecomán",
+    "email": "a@a.com",
+    "telefono": "1312314212",
+    "fecha_nacimiento": "2025-06-12",
+    "inicio_trabajo": "2024-01-12"
+  }
+}

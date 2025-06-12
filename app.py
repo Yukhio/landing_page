@@ -1,24 +1,35 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
+import json
+import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = 'clave-secreta-segura'  # necesaria para usar sesiones
 
+UPLOAD_FOLDER = 'static/img/perfiles'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Crea la carpeta si no existe
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+USUARIOS_FILE = "usuarios.json"
+
+def cargar_usuarios():
+    if os.path.exists(USUARIOS_FILE):
+        with open(USUARIOS_FILE, "r") as f:
+            return json.load(f)
+    return {}
+
+def guardar_usuarios(data):
+    with open(USUARIOS_FILE, "w") as f:
+        json.dump(data, f, indent=2)
+
+
 # Usuarios de ejemplo
-usuarios = {
-    "enrique": {
-        "password": "123",
-        "nombre": "Enrique Yukhio Juárez Preciado",
-        "foto": "img/perfil.jpeg",
-        "puesto": "Desarrollador Full Stack",
-        "ubicacion": "Colima, Colima, México",
-        "email": "yukhio.000@gmail.com",
-        "telefono": "+52 3121184818",
-        "fecha_nacimiento": "1999-12-08",
-        "inicio_trabajo": "2024-12-02"
-    }
-}
+usuarios = cargar_usuarios()
 
 @app.route('/')
 def index():
@@ -26,7 +37,7 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    mensaje = ''
+    mensaje = session.pop('mensaje_login', '')
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -34,11 +45,11 @@ def login():
 
         if user and user['password'] == password:
             session['username'] = username
-            session['show_welcome'] = True
             return redirect(url_for('perfil'))
         else:
             mensaje = 'Usuario o contraseña incorrectos.'
     return render_template('login.html', mensaje=mensaje)
+
 
 @app.route('/perfil')
 def perfil():
@@ -93,6 +104,44 @@ def perfil():
         "tiempo_para_cumple": tiempo_para_cumple,
         "es_cumpleanios": es_cumple
     }, mostrar_bienvenida=mostrar_bienvenida)
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/registro', methods=['GET', 'POST'])
+def registro():
+    mensaje = ''
+    if request.method == 'POST':
+        username = request.form['username']
+        if username in usuarios:
+            mensaje = 'El nombre de usuario ya está registrado.'
+        else:
+            # Verifica archivo
+            foto = request.files['foto']
+            if foto and allowed_file(foto.filename):
+                filename = secure_filename(f"{username}_{foto.filename}")
+                foto_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                foto.save(foto_path)
+                foto_url = f"img/perfiles/{filename}"
+            else:
+                mensaje = 'Formato de imagen no permitido.'
+                return render_template('registro.html', mensaje=mensaje)
+
+            usuarios[username] = {
+                "password": request.form['password'],
+                "nombre": request.form['nombre'],
+                "puesto": request.form['puesto'],
+                "ubicacion": request.form['ubicacion'],
+                "email": request.form['email'],
+                "telefono": request.form['telefono'],
+                "fecha_nacimiento": request.form['fecha_nacimiento'],
+                "inicio_trabajo": request.form['inicio_trabajo'],
+                "foto": foto_url
+            }
+            session['mensaje_login'] = '¡Usuario registrado con éxito! Ahora puedes iniciar sesión.'
+            return redirect(url_for('login'))
+    return render_template('registro.html', mensaje=mensaje)
 
 @app.route('/logout')
 def logout():

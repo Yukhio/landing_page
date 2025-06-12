@@ -1,92 +1,125 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Iniciar sesión</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background: #f0f2f5;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-    .login-container {
-      background: white;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 360px;
-    }
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 360px;
+        }
 
-    .login-container h2 {
-      margin-bottom: 24px;
-      text-align: center;
-      color: #333;
-    }
+        .login-container h2 {
+            margin-bottom: 24px;
+            text-align: center;
+            color: #333;
+        }
 
-    .login-container input[type="text"],
-    .login-container input[type="password"] {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 16px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 16px;
-    }
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
 
-    .login-container button {
-      width: 100%;
-      padding: 12px;
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
+        .login-container button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
-    .login-container button:hover {
-      background-color: #0056b3;
-    }
+        .login-container button:hover {
+            background-color: #0056b3;
+        }
 
-    .error {
-      color: red;
-      margin-top: 10px;
-      text-align: center;
-    }
+        .error {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+        }
 
-    .footer {
-      margin-top: 20px;
-      text-align: center;
-      font-size: 14px;
-      color: #999;
-    }
-  </style>
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #999;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .register-link a {
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
+
 <body>
-  <div class="login-container">
-    <h2>Iniciar sesión</h2>
-    <form method="POST">
-      <input type="text" name="username" placeholder="Usuario" required>
-      <input type="password" name="password" placeholder="Contraseña" required>
-      <button type="submit">Entrar</button>
-    </form>
-    {% if mensaje %}
-      <div class="error">{{ mensaje }}</div>
-    {% endif %}
-    <div class="footer">© {{ now().year }} Mi App Personal</div>
-  </div>
+    <div class="login-container">
+        <h2>Iniciar sesión</h2>
+        <form method="POST">
+            <input type="text" name="username" placeholder="Usuario" required>
+            <input type="password" name="password" placeholder="Contraseña" required>
+            <button type="submit">Entrar</button>
+            <div class="register-link">
+                <p>¿No tienes una cuenta?</p>
+                <a href="{{ url_for('registro') }}">Registrar perfil</a>
+            </div>
+        </form>
+        {% if mensaje %}
+        <div class="alert" style="
+                background-color: #d4edda;
+                color: #155724;
+                padding: 10px;
+                border-radius: 6px;
+                margin-bottom: 20px;
+                text-align: center;
+                border: 1px solid #c3e6cb;
+            ">
+            {{ mensaje }}
+        </div>
+        {% endif %}
+
+        <div class="footer">© {{ now().year }} Mi App Personal</div>
+    </div>
 </body>
+
 </html>

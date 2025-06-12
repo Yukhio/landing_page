@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro de Usuario</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .registro-container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 24px;
+            color: #333;
+        }
+
+        form input,
+        form label {
+            width: 100%;
+            font-size: 14px;
+        }
+
+        form input {
+            padding: 12px;
+            margin-bottom: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .preview-img {
+            display: none;
+            margin-top: 10px;
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        form button,
+        .form-buttons a {
+            flex: 1;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 16px;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        form button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #0056b3;
+        }
+
+        .form-buttons a {
+            background: #ccc;
+            color: #000;
+        }
+
+        .form-buttons a:hover {
+            background: #bbb;
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .link-login {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .link-login a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        .link-login a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="registro-container">
+        <h2>Crear nuevo perfil</h2>
+        <form method="POST" enctype="multipart/form-data">
+            <input type="text" name="username" placeholder="Nombre de usuario" required>
+            <input type="password" name="password" placeholder="Contraseña" required>
+            <input type="text" name="nombre" placeholder="Nombre completo" required>
+            <input type="text" name="puesto" placeholder="Puesto o cargo" required>
+            <input type="text" name="ubicacion" placeholder="Ubicación" required>
+            <input type="email" name="email" placeholder="Correo electrónico" required>
+            <input type="text" name="telefono" placeholder="Teléfono" required>
+
+            <label for="fecha_nacimiento">Fecha de nacimiento:</label>
+            <input type="date" name="fecha_nacimiento" required>
+
+            <label for="inicio_trabajo">Fecha de ingreso al trabajo:</label>
+            <input type="date" name="inicio_trabajo" required>
+
+            <label for="foto">Foto de perfil (png, jpg, jpeg):</label>
+            <input type="file" name="foto" id="foto" accept=".png,.jpg,.jpeg" required>
+
+            <img id="preview" class="preview-img" src="" alt="Vista previa" />
+
+            <div class="form-buttons">
+                <button type="submit">Registrarse</button>
+                <a href="{{ url_for('login') }}">Cancelar</a>
+            </div>
+        </form>
+
+        {% if mensaje %}
+        <div class="error">{{ mensaje }}</div>
+        {% endif %}
+
+        <div class="link-login">
+            ¿Ya tienes cuenta? <a href="{{ url_for('login') }}">Inicia sesión</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('foto').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('preview');
+
+            if (file && file.type.match('image.*')) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = '';
+                preview.style.display = 'none';
+            }
+        });
+    </script>
+
+</body>
+
+</html>
