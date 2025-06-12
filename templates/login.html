@@ -2,51 +2,46 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar sesión</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iniciar Sesión</title>
     <style>
-        * {
-            box-sizing: border-box;
-        }
-
         body {
             margin: 0;
-            padding: 0;
             font-family: Arial, sans-serif;
-            background: #f0f2f5;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            background: url("{{ url_for('static', filename='img/images/background_login.jpeg') }}") no-repeat center center fixed;
+            background-size: cover;
         }
 
         .login-container {
-            background: white;
+            background: rgba(255, 255, 255, 0.9);
             padding: 40px;
             border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
             width: 100%;
-            max-width: 360px;
+            max-width: 400px;
         }
 
-        .login-container h2 {
-            margin-bottom: 24px;
+        h2 {
             text-align: center;
+            margin-bottom: 24px;
             color: #333;
         }
 
-        .login-container input[type="text"],
-        .login-container input[type="password"] {
+        form input {
             width: 100%;
             padding: 12px;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             border: 1px solid #ccc;
             border-radius: 6px;
-            font-size: 16px;
+            font-size: 14px;
         }
 
-        .login-container button {
+        form button {
             width: 100%;
             padding: 12px;
             background-color: #007BFF;
@@ -58,32 +53,25 @@
             transition: background-color 0.3s ease;
         }
 
-        .login-container button:hover {
+        form button:hover {
             background-color: #0056b3;
         }
 
         .error {
             color: red;
+            text-align: center;
             margin-top: 10px;
-            text-align: center;
-        }
-
-        .footer {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 14px;
-            color: #999;
         }
 
         .register-link {
             text-align: center;
             margin-top: 15px;
+            font-size: 14px;
         }
 
         .register-link a {
             color: #007BFF;
             text-decoration: none;
-            font-weight: bold;
         }
 
         .register-link a:hover {
@@ -93,33 +81,24 @@
 </head>
 
 <body>
+
     <div class="login-container">
-        <h2>Iniciar sesión</h2>
+        <h2>Iniciar Sesión</h2>
         <form method="POST">
-            <input type="text" name="username" placeholder="Usuario" required>
+            <input type="text" name="username" placeholder="Nombre de usuario" required>
             <input type="password" name="password" placeholder="Contraseña" required>
-            <button type="submit">Entrar</button>
-            <div class="register-link">
-                <p>¿No tienes una cuenta?</p>
-                <a href="{{ url_for('registro') }}">Registrar perfil</a>
-            </div>
+            <button type="submit">Ingresar</button>
         </form>
+
         {% if mensaje %}
-        <div class="alert" style="
-                background-color: #d4edda;
-                color: #155724;
-                padding: 10px;
-                border-radius: 6px;
-                margin-bottom: 20px;
-                text-align: center;
-                border: 1px solid #c3e6cb;
-            ">
-            {{ mensaje }}
-        </div>
+        <div class="error">{{ mensaje }}</div>
         {% endif %}
 
-        <div class="footer">© {{ now().year }} Mi App Personal</div>
+        <div class="register-link">
+            ¿No tienes cuenta? <a href="{{ url_for('registro') }}">Regístrate</a>
+        </div>
     </div>
+
 </body>
 
 </html>
