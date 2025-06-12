@@ -2,7 +2,7 @@
   "yukhio": {
     "password": "123",
     "nombre": "Enrique Yukhio Juárez Preciado",
-    "foto": "img/perfil.jpeg",
+    "foto": "img/perfiles/perfil.jpeg",
     "puesto": "Desarrollador Full Stack",
     "ubicacion": "Colima, Colima, México",
     "email": "yukhio.000@gmail.com",
@@ -13,7 +13,7 @@
   "elpepe": {
     "password": "123",
     "nombre": "El pepe etesech",
-    "foto": "img/tilin_Selene.jpeg",
+    "foto": "img/perfiles/tilin_Selene.jpeg",
     "puesto": "Programador",
     "ubicacion": "Tecomán",
     "email": "a@a.com",
