@@ -113,6 +113,42 @@
             background-color: #0056b3;
         }
 
+        .top-buttons {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-ver-todos,
+        .btn-logout {
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-ver-todos {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .btn-ver-todos:hover {
+            background-color: #138496;
+        }
+
+        .btn-logout {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-logout:hover {
+            background-color: #c82333;
+        }
+
         @keyframes fadeOut {
             0% {
                 opacity: 1;
@@ -131,21 +167,11 @@
 </head>
 
 <body>
-    <a href="{{ url_for('logout') }}" style="
-        position: absolute;
-        top: 20px;
-        right: 30px;
-        background-color: #dc3545;
-        color: white;
-        padding: 8px 16px;
-        border-radius: 6px;
-        text-decoration: none;
-        font-weight: bold;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        transition: background-color 0.3s ease;
-        " onmouseover="this.style.backgroundColor='#bb2d3b'" onmouseout="this.style.backgroundColor='#dc3545'">
-        Cerrar sesión
-    </a>
+    <div class="top-buttons">
+        <a href="{{ url_for('lista_perfiles') }}" class="btn-ver-todos">Ver todos los perfiles</a>
+        <a href="{{ url_for('logout') }}" class="btn-logout">Cerrar sesión</a>
+    </div>
+
 
     {% if mostrar_bienvenida %}
     <div id="bienvenida" style="

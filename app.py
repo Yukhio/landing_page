@@ -143,6 +143,12 @@ def registro():
             return redirect(url_for('login'))
     return render_template('registro.html', mensaje=mensaje)
 
+@app.route('/perfiles')
+def lista_perfiles():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    return render_template('perfiles.html', usuarios=usuarios)
+
 @app.route('/logout')
 def logout():
     session.clear()

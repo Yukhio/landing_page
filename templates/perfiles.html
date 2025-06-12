@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Todos los perfiles</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 20px;
+      width: 260px;
+      text-align: center;
+    }
+    .card img {
+      width: 100%;
+      border-radius: 8px;
+      max-height: 180px;
+      object-fit: cover;
+    }
+    .card h3 {
+      margin: 10px 0 5px;
+    }
+    .card p {
+      margin: 2px 0;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+        <a href="{{ url_for('logout') }}" style="
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        background-color: #dc3545;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        transition: background-color 0.3s ease;
+        " onmouseover="this.style.backgroundColor='#bb2d3b'" onmouseout="this.style.backgroundColor='#dc3545'">
+        Cerrar sesión
+    </a>
+  <h1>Perfiles registrados</h1>
+  <div class="grid">
+    {% for username, user in usuarios.items() %}
+    <div class="card">
+      <img src="{{ url_for('static', filename=user.foto) }}" alt="Foto de {{ user.nombre }}">
+      <h3>{{ user.nombre }}</h3>
+      <p><strong>Puesto:</strong> {{ user.puesto }}</p>
+      <p><strong>Ubicación:</strong> {{ user.ubicacion }}</p>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>Teléfono:</strong> {{ user.telefono }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</body>
+</html>
