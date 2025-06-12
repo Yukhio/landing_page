@@ -9,116 +9,16 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
             margin: 0;
-            background: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            position: relative;
-        }
-
-        .container {
-            position: relative;
-        }
-
-        .card {
-            width: 250px;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            background-color: rgba(5, 130, 212, 0.1);
-            border: 1px solid #000;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .container:hover .card {
-            border: 3px solid #007BFF;
-            box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
-        }
-
-        .card img.profile {
-            width: 100%;
-            display: block;
-            border-radius: 12px;
-        }
-
-        .hat-emoji {
-            position: absolute;
-            top: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 2rem;
-            z-index: 10;
-            animation: bounce 1.5s infinite ease-in-out;
-        }
-
-        @keyframes bounce {
-
-            0%,
-            100% {
-                transform: translateX(-50%) translateY(0);
-            }
-
-            50% {
-                transform: translateX(-50%) translateY(-10px);
-            }
-        }
-
-
-        .info-section {
-            position: absolute;
-            top: 0;
-            left: 270px;
-            width: 250px;
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            opacity: 0;
-            transform: translateX(-20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            pointer-events: none;
-        }
-
-        .container:hover .info-section {
-            opacity: 1;
-            transform: translateX(0);
-            pointer-events: auto;
-        }
-
-        .info-section h2 {
-            margin-top: 0;
-            color: #333;
-        }
-
-        .info-section p {
-            margin: 5px 0;
-            color: #666;
-        }
-
-        .info-section a {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 8px 16px;
-            background-color: #007BFF;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            transition: background 0.3s ease;
-        }
-
-        .info-section a:hover {
-            background-color: #0056b3;
+            padding: 0;
         }
 
         .top-buttons {
-            position: absolute;
-            top: 20px;
-            right: 20px;
             display: flex;
+            justify-content: flex-end;
             gap: 10px;
+            padding: 20px;
         }
 
         .btn-ver-todos,
@@ -128,7 +28,6 @@
             text-decoration: none;
             font-weight: bold;
             font-size: 14px;
-            transition: background-color 0.3s ease;
         }
 
         .btn-ver-todos {
@@ -136,24 +35,114 @@
             color: white;
         }
 
-        .btn-ver-todos:hover {
-            background-color: #138496;
-        }
-
         .btn-logout {
             background-color: #dc3545;
             color: white;
         }
 
-        .btn-logout:hover {
-            background-color: #c82333;
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .foto-usuario {
+            margin-top: 30px;
+        }
+
+        .foto-usuario img {
+            width: 220px;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-layout {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .tarea-card,
+        .formulario-tarea {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 320px;
+        }
+
+        .tarea-card h3,
+        .formulario-tarea h3 {
+            margin-top: 0;
+        }
+
+        .tarea-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+        }
+
+        .tarea-info {
+            flex: 1;
+        }
+
+        .tarea-item.completed {
+            background-color: #e6ffe6;
+            text-decoration: line-through;
+            color: gray;
+        }
+
+        .tarea-item strong {
+            display: block;
+        }
+
+        .eliminar-btn,
+        .completar-btn {
+            margin-left: 5px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .eliminar-btn {
+            background: red;
+            color: white;
+        }
+
+        .completar-btn {
+            background: green;
+            color: white;
+        }
+
+        .formulario-tarea input,
+        .formulario-tarea textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .formulario-tarea button {
+            width: 100%;
+            padding: 10px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
         }
 
         @keyframes fadeOut {
-            0% {
-                opacity: 1;
-            }
 
+            0%,
             80% {
                 opacity: 1;
             }
@@ -172,18 +161,9 @@
         <a href="{{ url_for('logout') }}" class="btn-logout">Cerrar sesión</a>
     </div>
 
-
     {% if mostrar_bienvenida %}
-    <div id="bienvenida" style="
-        text-align: center;
-        background-color: #d1e7dd;
-        color: #0f5132;
-        padding: 15px;
-        font-size: 18px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        animation: fadeOut 3s ease forwards;
-        ">
+    <div id="bienvenida"
+        style="text-align: center; background-color: #d1e7dd; color: #0f5132; padding: 15px; font-size: 18px; border-radius: 8px; margin: 10px;">
         ¡Bienvenido, {{ person.nombre }}!
     </div>
     {% endif %}
@@ -200,24 +180,43 @@
     </script>
     {% endif %}
 
-    <div class="container">
-        {% if person.es_cumpleanios %}
-        <div class="hat-emoji">🎉🎉</div>
-        {% endif %}
-        <div class="card">
-            <img src="{{ url_for('static', filename=person.foto) }}" alt="Foto de {{ person.nombre }}" class="profile">
+    <div class="main-container">
+        <h1>{{ person.nombre }}</h1>
+        <div class="foto-usuario">
+            <img src="{{ url_for('static', filename=person.foto) }}" alt="Foto de {{ person.nombre }}">
         </div>
 
-        <div class="info-section">
-            <h2>{{ person.nombre }}</h2>
-            <p><strong>Puesto:</strong> {{ person.puesto }}</p>
-            <p><strong>Ubicación:</strong> {{ person.ubicacion }}</p>
-            <p><strong>Fecha de nacimiento:</strong> {{ person.fecha_nacimiento }}</p>
-            <p><strong>Edad:</strong> {{ person.edad }} años</p>
-            <p><strong>Fecha de ingreso:</strong> {{ person.inicio_trabajo }}</p>
-            <p><strong>Tiempo trabajando:</strong> {{ person.tiempo_trabajando }}</p>
-            <p><strong>Próximo cumpleaños:</strong> {{ person.tiempo_para_cumple }}</p>
-            <a href="{{ person.url }}" target="_blank">Mi contacto</a>
+        <div class="main-layout">
+            <div class="tarea-card">
+                <h3>Tareas guardadas</h3>
+                {% for tarea in tareas %}
+                <div class="tarea-item {% if tarea.completada %}completed{% endif %}">
+                    <div class="tarea-info">
+                        <strong>{{ tarea.titulo }}</strong>
+                        <p>{{ tarea.descripcion }}</p>
+                    </div>
+                    <form method="POST" action="{{ url_for('completar_tarea') }}">
+                        <input type="hidden" name="indice" value="{{ loop.index0 }}">
+                        <button type="submit" class="completar-btn">✓</button>
+                    </form>
+                    <form method="POST" action="{{ url_for('eliminar_tarea') }}">
+                        <input type="hidden" name="indice" value="{{ loop.index0 }}">
+                        <button type="submit" class="eliminar-btn">Eliminar</button>
+                    </form>
+                </div>
+                {% else %}
+                <p>No hay tareas todavía.</p>
+                {% endfor %}
+            </div>
+
+            <div class="formulario-tarea">
+                <h3>Asignar nueva tarea</h3>
+                <form method="POST">
+                    <input type="text" name="titulo" placeholder="Título" required>
+                    <textarea name="descripcion" placeholder="Descripción" required></textarea>
+                    <button type="submit">Guardar tarea</button>
+                </form>
+            </div>
         </div>
     </div>
 </body>

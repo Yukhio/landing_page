@@ -8,7 +8,14 @@
     "email": "yukhio.000@gmail.com",
     "telefono": "+52 3121184818",
     "fecha_nacimiento": "1999-12-08",
-    "inicio_trabajo": "2024-12-02"
+    "inicio_trabajo": "2024-12-02",
+    "tareas": [
+      {
+        "titulo": "Desarrollo prueba",
+        "descripcion": "Datos",
+        "completada": true
+      }
+    ]
   },
   "elpepe": {
     "password": "123",
@@ -20,5 +27,16 @@
     "telefono": "1312314212",
     "fecha_nacimiento": "2025-06-12",
     "inicio_trabajo": "2024-01-12"
+  },
+  "piratita?": {
+    "password": "mencho?",
+    "nombre": "Piratita de Culiacán",
+    "puesto": "Presidente de México",
+    "ubicacion": "Colima, Colima, México",
+    "email": "Pirata@piratita.com",
+    "telefono": "3123123123",
+    "fecha_nacimiento": "1997-12-05",
+    "inicio_trabajo": "2003-06-16",
+    "foto": "img/perfiles/piratita_Piratita_2.JPG"
   }
 }

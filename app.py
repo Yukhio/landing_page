@@ -50,64 +50,6 @@ def login():
     return render_template('login.html', mensaje=mensaje)
 
 
-@app.route('/perfil')
-def perfil():
-    username = session.get('username')
-    if not username or username not in usuarios:
-        return redirect(url_for('login'))
-
-    user = usuarios[username]
-    mostrar_bienvenida = session.pop('show_welcome', False)
-
-    hoy = date.today()
-    fecha_nacimiento = datetime.strptime(user['fecha_nacimiento'], "%Y-%m-%d").date()
-    inicio_trabajo = datetime.strptime(user['inicio_trabajo'], "%Y-%m-%d").date()
-
-    edad = hoy.year - fecha_nacimiento.year - ((hoy.month, hoy.day) < (fecha_nacimiento.month, fecha_nacimiento.day))
-    fecha_formateada = fecha_nacimiento.strftime("%d/%m/%Y")
-    inicio_formateado = inicio_trabajo.strftime("%d/%m/%Y")
-
-    # Tiempo trabajado
-    diferencia = relativedelta(hoy, inicio_trabajo)
-    partes = []
-    if diferencia.years:
-        partes.append(f"{diferencia.years} año{'s' if diferencia.years > 1 else ''}")
-    if diferencia.months:
-        partes.append(f"{diferencia.months} mes{'es' if diferencia.months > 1 else ''}")
-    if diferencia.days and not diferencia.years:
-        partes.append(f"{diferencia.days} día{'s' if diferencia.days > 1 else ''}")
-    tiempo_trabajando = ", ".join(partes) if partes else "Hoy"
-
-    # Próximo cumpleaños
-    proximo = fecha_nacimiento.replace(year=hoy.year)
-    if proximo < hoy:
-        proximo = proximo.replace(year=hoy.year + 1)
-    delta = relativedelta(proximo, hoy)
-    es_cumple = hoy.month == fecha_nacimiento.month and hoy.day == fecha_nacimiento.day
-    if es_cumple:
-        tiempo_para_cumple = "¡Feliz cumpleaños!"
-    else:
-        partes_cumple = []
-        if delta.months:
-            partes_cumple.append(f"{delta.months} mes{'es' if delta.months > 1 else ''}")
-        if delta.days:
-            partes_cumple.append(f"{delta.days} día{'s' if delta.days > 1 else ''}")
-        tiempo_para_cumple = f"Faltan {', '.join(partes_cumple)} para tu próximo cumpleaños"
-
-    return render_template("perfil.html", person={
-        **user,
-        "edad": edad,
-        "fecha_nacimiento": fecha_formateada,
-        "inicio_trabajo": inicio_formateado,
-        "tiempo_trabajando": tiempo_trabajando,
-        "tiempo_para_cumple": tiempo_para_cumple,
-        "es_cumpleanios": es_cumple
-    }, mostrar_bienvenida=mostrar_bienvenida)
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
     mensaje = ''
@@ -136,11 +78,103 @@ def registro():
                 "telefono": request.form['telefono'],
                 "fecha_nacimiento": request.form['fecha_nacimiento'],
                 "inicio_trabajo": request.form['inicio_trabajo'],
-                "foto": foto_url
+                "foto": foto_url,
+                "tareas": []  # Inicializa las tareas vacías
             }
+
+            guardar_usuarios(usuarios)
             session['mensaje_login'] = '¡Usuario registrado con éxito! Ahora puedes iniciar sesión.'
             return redirect(url_for('login'))
     return render_template('registro.html', mensaje=mensaje)
+
+
+@app.route('/perfil', methods=['GET', 'POST'])
+def perfil():
+    username = session.get('username')
+    if not username or username not in usuarios:
+        return redirect(url_for('login'))
+
+    user = usuarios[username]
+    mostrar_bienvenida = session.pop('show_welcome', False)
+
+    hoy = date.today()
+    fecha_nacimiento = datetime.strptime(user['fecha_nacimiento'], "%Y-%m-%d").date()
+    inicio_trabajo = datetime.strptime(user['inicio_trabajo'], "%Y-%m-%d").date()
+
+    edad = hoy.year - fecha_nacimiento.year - ((hoy.month, hoy.day) < (fecha_nacimiento.month, fecha_nacimiento.day))
+    fecha_formateada = fecha_nacimiento.strftime("%d/%m/%Y")
+    inicio_formateado = inicio_trabajo.strftime("%d/%m/%Y")
+
+    diferencia = relativedelta(hoy, inicio_trabajo)
+    partes = []
+    if diferencia.years:
+        partes.append(f"{diferencia.years} año{'s' if diferencia.years > 1 else ''}")
+    if diferencia.months:
+        partes.append(f"{diferencia.months} mes{'es' if diferencia.months > 1 else ''}")
+    if diferencia.days and not diferencia.years:
+        partes.append(f"{diferencia.days} día{'s' if diferencia.days > 1 else ''}")
+    tiempo_trabajando = ", ".join(partes) if partes else "Hoy"
+
+    proximo = fecha_nacimiento.replace(year=hoy.year)
+    if proximo < hoy:
+        proximo = proximo.replace(year=hoy.year + 1)
+    delta = relativedelta(proximo, hoy)
+    es_cumple = hoy.month == fecha_nacimiento.month and hoy.day == fecha_nacimiento.day
+    tiempo_para_cumple = (
+        "¡Feliz cumpleaños!" if es_cumple
+        else f"Faltan {delta.months} meses, {delta.days} días para tu próximo cumpleaños"
+    )
+
+    if request.method == 'POST':
+        titulo = request.form.get("titulo")
+        descripcion = request.form.get("descripcion")
+        if titulo and descripcion:
+            usuarios[username]["tareas"].append({
+                "titulo": titulo,
+                "descripcion": descripcion,
+                "completada": False
+            })
+            guardar_usuarios(usuarios)
+            return redirect(url_for("perfil"))
+
+    return render_template("perfil.html", person={
+        **user,
+        "edad": edad,
+        "fecha_nacimiento": fecha_formateada,
+        "inicio_trabajo": inicio_formateado,
+        "tiempo_trabajando": tiempo_trabajando,
+        "tiempo_para_cumple": tiempo_para_cumple,
+        "es_cumpleanios": es_cumple
+    }, mostrar_bienvenida=mostrar_bienvenida, tareas=user.get("tareas", []))
+
+
+@app.route('/eliminar-tarea', methods=['POST'])
+def eliminar_tarea():
+    username = session.get('username')
+    if not username or username not in usuarios:
+        return redirect(url_for('login'))
+
+    indice = int(request.form.get('indice', -1))
+    if 0 <= indice < len(usuarios[username].get("tareas", [])):
+        usuarios[username]["tareas"].pop(indice)
+        guardar_usuarios(usuarios)
+
+    return redirect(url_for('perfil'))
+
+
+@app.route('/completar-tarea', methods=['POST'])
+def completar_tarea():
+    username = session.get('username')
+    if not username or username not in usuarios:
+        return redirect(url_for('login'))
+
+    indice = int(request.form.get('indice', -1))
+    if 0 <= indice < len(usuarios[username].get("tareas", [])):
+        usuarios[username]["tareas"][indice]['completada'] = True
+        guardar_usuarios(usuarios)
+
+    return redirect(url_for('perfil'))
+
 
 @app.route('/perfiles')
 def lista_perfiles():
