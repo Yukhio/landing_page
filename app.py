@@ -18,7 +18,9 @@ def allowed_file(filename):
 # Crea la carpeta si no existe
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-USUARIOS_FILE = "/landing_page/usuarios.json"
+BASE_DIR = os.path.dirname(__file__)
+USUARIOS_FILE = os.path.join(os.path.dirname(__file__), "usuarios.json")
+print("Usuarios path:", USUARIOS_FILE)
 
 def cargar_usuarios():
     if os.path.exists(USUARIOS_FILE):
@@ -35,7 +37,8 @@ def guardar_usuarios(data):
     with open(USUARIOS_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
 
-MENSAJES_FILE = "/landing_page/mensajes.json"
+MENSAJES_FILE = os.path.join(os.path.dirname(__file__), "mensajes.json")
+print("Mensajes path:", MENSAJES_FILE)
 
 def cargar_mensajes():
     if os.path.exists(MENSAJES_FILE):
