@@ -11,14 +11,18 @@
     "inicio_trabajo": "2024-12-02",
     "tareas": [
       {
-        "titulo": "aaaa",
+        "titulo": "Modulo de ventas",
         "subtareas": [
           {
-            "titulo": "aaaaaaa",
-            "descripcion": "aaaaaa"
+            "titulo": "Despacho",
+            "descripcion": "Falta mostrar el pesaje que se despachó del lote que está vendiendo la existencia"
+          },
+          {
+            "titulo": "Modificar el peso en su existencia de ese lote",
+            "descripcion": "Descuento"
           }
         ],
-        "completada": true
+        "completada": false
       }
     ]
   },

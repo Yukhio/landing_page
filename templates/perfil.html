@@ -373,7 +373,7 @@
         </div>
 
         <div class="main-layout">
-            <div class="card">
+            <div class="card" style="width: 40%;">
                 <h3>Tareas pendientes</h3>
                 {% for tarea in tareas if not tarea.completada %}
                 {% set i = loop.index0 %}
@@ -397,7 +397,7 @@
                 {% else %}<p>No hay tareas pendientes.</p>{% endfor %}
             </div>
 
-            <div class="card formulario-tarea" style="width: 400px;">
+            <div class="card formulario-tarea" style="width: 40%;">
                 <h3>Asignar nueva tarea</h3>
                 <form method="POST" id="formTarea">
                     <input type="text" name="titulo" placeholder="Título de la tarea" required><br>
@@ -461,14 +461,14 @@
 
     <div class="chat-modal" id="chatUserList"
         style="display: none; position: fixed; bottom: 80px; right: 20px; width: 300px; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); border-radius: 10px; overflow: hidden; z-index: 9999;">
-        <header style="background-color: #0d6efd; color: white; padding: 10px; font-weight: bold;">Selecciona un usuario
+        <header style="background-color: #0d6efd; color: white; padding: 10px; font-weight: bold;">Chat
         </header>
         <div class="chat-users" id="chatUsers" style="max-height: 300px; overflow-y: auto;"></div>
     </div>
 
     <div class="chat-modal" id="chatUserList"
         style="display: none; position: fixed; bottom: 80px; right: 20px; width: 300px; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); border-radius: 10px; overflow: hidden; z-index: 9999;">
-        <header style="background-color: #0d6efd; color: white; padding: 10px; font-weight: bold;">Selecciona un usuario
+        <header style="background-color: #0d6efd; color: white; padding: 10px; font-weight: bold;">Chat
         </header>
         <div class="chat-users" id="chatUsers" style="max-height: 300px; overflow-y: auto;">
             <!-- contenido generado dinámicamente -->

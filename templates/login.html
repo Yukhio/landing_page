@@ -84,20 +84,39 @@
 
     <div class="login-container">
         <h2>Iniciar Sesión</h2>
+        {% if mensaje %}
+        <div id="gif-container" style="text-align: center; margin-bottom: 20px;">
+            <img src="{{ url_for('static', filename='img/images/baile-del-trolleo.gif') }}" alt="GIF error"
+                style="max-width: 100%; height: auto; border-radius: 10px;" />
+        </div>
+        <div class="error">{{ mensaje }}</div>
+        {% endif %}
+
         <form method="POST">
             <input type="text" style="width: 93%;" name="username" placeholder="Usuario" required>
             <input type="password" style="width: 93%;" name="password" placeholder="Contraseña" required>
             <button type="submit">Ingresar</button>
         </form>
 
-        {% if mensaje %}
+        <!-- {% if mensaje %}
         <div class="error">{{ mensaje }}</div>
-        {% endif %}
+        {% endif %} -->
 
         <div class="register-link">
             ¿No tienes cuenta? <a href="{{ url_for('registro') }}">Regístrate</a>
         </div>
     </div>
+
+    <script>
+    window.addEventListener('load', () => {
+        const gif = document.getElementById('gif-container');
+        if (gif) {
+            setTimeout(() => {
+                gif.style.display = 'none';
+            }, 8000); // 10 segundos
+        }
+    });
+</script>
 
 </body>
 
