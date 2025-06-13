@@ -288,6 +288,24 @@
             border: none;
             cursor: pointer;
         }
+
+        .burbuja-receptor {
+            background-color: #f1f1f1;
+            align-self: flex-start;
+            padding: 8px 12px;
+            border-radius: 14px;
+            max-width: 80%;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .burbuja-emisor {
+            background-color: #d1e7dd;
+            align-self: flex-end;
+            padding: 8px 12px;
+            border-radius: 14px;
+            max-width: 80%;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 
@@ -319,6 +337,7 @@
             <div class="card">
                 <h3>Tareas pendientes</h3>
                 {% for tarea in tareas if not tarea.completada %}
+                {% set i = loop.index0 %}
                 <div class="tarea-item">
                     <strong>{{ tarea.titulo }}</strong>
                     {% for subtitulo in tarea.subtareas %}
@@ -327,18 +346,19 @@
                     </div>
                     {% endfor %}
                     <form method="POST" action="{{ url_for('completar_tarea') }}">
-                        <input type="hidden" name="indice" value="{{ loop.index0 }}">
+                        <input type="hidden" name="indice" value="{{ i }}">
                         <button type="submit">✓</button>
                     </form>
+
                     <form method="POST" action="{{ url_for('eliminar_tarea') }}">
-                        <input type="hidden" name="indice" value="{{ loop.index0 }}">
+                        <input type="hidden" name="indice" value="{{ i }}">
                         <button type="submit">Eliminar</button>
                     </form>
                 </div>
                 {% else %}<p>No hay tareas pendientes.</p>{% endfor %}
             </div>
 
-            <div class="card formulario-tarea">
+            <div class="card formulario-tarea" style="width: 400px;">
                 <h3>Asignar nueva tarea</h3>
                 <form method="POST" id="formTarea">
                     <input type="text" name="titulo" placeholder="Título de la tarea" required><br>
@@ -390,20 +410,22 @@
     </div>
 
     <!-- Conversación activa -->
-    <div class="chat-modal" id="chatBox" style="display: none; width: 360px; height: 420px; flex-direction: column;">
+    <div class="chat-modal" id="chatBox"
+        style="display: none; width: 360px; height: 420px; flex-direction: column; position: fixed; bottom: 80px; right: 20px;">
         <header
             style="display: flex; align-items: center; gap: 10px; background-color: #0d6efd; color: white; padding: 10px; font-weight: bold;">
             <img id="chatFoto" src="" alt="" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover;">
             <span id="chatWith" style="flex: 1;"></span>
-            <span class="close-modal" onclick="cerrarChat()">&times;</span>
+            <span class="close-modal" onclick="cerrarChat()" style="cursor: pointer;">&times;</span>
         </header>
-        <div class="chat-messages" id="chatMessages" style="flex: 1; overflow-y: auto; padding: 10px; font-size: 14px;">
+        <div class="chat-messages" id="chatMessages"
+            style="flex: 1; overflow-y: auto; padding: 10px; font-size: 14px; display: flex; flex-direction: column; gap: 6px;">
         </div>
         <form class="chat-input" id="chatForm" onsubmit="handleSubmit(event)"
-            style="display: flex; border-top: 1px solid #ccc;">
+            style="display: flex; border-top: 1px solid #ccc; padding: 10px; gap: 5px;">
             <input type="text" id="chatInput" placeholder="Escribe un mensaje" autocomplete="off"
-                style="flex: 1; padding: 8px; border: none; font-size: 14px;">
-            <button type="submit" style="padding: 8px; background: #198754; border: none; cursor: pointer;">
+                style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 8px;">
+            <button type="submit" style="background: #198754; border: none; padding: 0 10px; border-radius: 8px;">
                 <img src="https://cdn-icons-png.flaticon.com/512/724/724715.png" alt="Enviar"
                     style="width: 20px; height: 20px;">
             </button>
@@ -443,6 +465,7 @@
                     area.innerHTML = '';
                     data.forEach(m => {
                         const msg = document.createElement('div');
+                        msg.className = m.emisor === receptorActual ? 'burbuja-receptor' : 'burbuja-emisor';
                         msg.textContent = `${m.emisor === receptorActual ? nombreReceptor : 'Tú'}: ${m.contenido}`;
                         area.appendChild(msg);
                     });
@@ -472,6 +495,14 @@
         }
     </script>
     <script>
+        document.querySelectorAll("form[action='/completar-tarea'], form[action='/eliminar-tarea']").forEach(form => {
+            form.addEventListener('submit', function () {
+                setTimeout(() => location.reload(), 100);
+            });
+        });
+    </script>
+
+    <script>
         function agregarSubtarea() {
             const ul = document.getElementById('subtareas');
             const li = document.createElement('li');
@@ -491,6 +522,20 @@
             modal.classList.remove('show');
         });
     </script>
+    {% for i in range(tareas|length) %}
+    {% set tarea = tareas[i] %}
+    {% if not tarea.completada %}
+    <!-- aquí va el bloque que muestra la tarea pendiente -->
+    <form method="POST" action="/completar-tarea">
+        <input type="hidden" name="indice" value="{{ i }}">
+        <button type="submit">✓</button>
+    </form>
+    <form method="POST" action="/eliminar-tarea">
+        <input type="hidden" name="indice" value="{{ i }}">
+        <button type="submit">Eliminar</button>
+    </form>
+    {% endif %}
+    {% endfor %}
 </body>
 
 </html>

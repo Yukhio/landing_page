@@ -145,13 +145,17 @@ def perfil():
 
     if request.method == 'POST':
         titulo = request.form.get("titulo")
-        descripcion = request.form.get("descripcion")
-        if titulo and descripcion:
-            if "tareas" not in usuarios[username]:
-                usuarios[username]["tareas"] = []
-            usuarios[username]["tareas"].append({
+        subtitulos = request.form.getlist("subtitulo[]")
+        descripciones = request.form.getlist("descripcion[]")
+
+        if titulo and subtitulos and descripciones and len(subtitulos) == len(descripciones):
+            subtareas = [
+                {"titulo": st, "descripcion": desc}
+                for st, desc in zip(subtitulos, descripciones)
+            ]
+            usuarios[username].setdefault("tareas", []).append({
                 "titulo": titulo,
-                "descripcion": descripcion,
+                "subtareas": subtareas,
                 "completada": False
             })
             guardar_usuarios(usuarios)

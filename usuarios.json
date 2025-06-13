@@ -11,19 +11,28 @@
     "inicio_trabajo": "2024-12-02",
     "tareas": [
       {
-        "titulo": "Asignar las ventas al lote de ventas",
-        "descripcion": "Ya casi queda",
+        "titulo": "Hola",
+        "subtareas": [
+          {
+            "titulo": "Si",
+            "descripcion": "No"
+          }
+        ],
         "completada": true
       },
       {
-        "titulo": "Nueva homework prueb",
-        "descripcion": "Si",
-        "completada": true
-      },
-      {
-        "titulo": "as",
-        "descripcion": "asd",
-        "completada": true
+        "titulo": "sad",
+        "subtareas": [
+          {
+            "titulo": "asd",
+            "descripcion": "asd"
+          },
+          {
+            "titulo": "asd",
+            "descripcion": "asd"
+          }
+        ],
+        "completada": false
       }
     ]
   },
@@ -47,6 +56,16 @@
         "titulo": "Nueva o no",
         "descripcion": "Si",
         "completada": true
+      },
+      {
+        "titulo": "s",
+        "subtareas": [
+          {
+            "titulo": "s",
+            "descripcion": "s"
+          }
+        ],
+        "completada": false
       }
     ]
   },
@@ -62,9 +81,14 @@
     "foto": "img/perfiles/piratita_Piratita_2.JPG",
     "tareas": [
       {
-        "titulo": "sdfs",
-        "descripcion": "sfs",
-        "completada": false
+        "titulo": "eef",
+        "subtareas": [
+          {
+            "titulo": "sfsdf",
+            "descripcion": "sdfsf"
+          }
+        ],
+        "completada": true
       }
     ]
   }
