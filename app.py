@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 import json
@@ -30,6 +30,20 @@ def cargar_usuarios():
 def guardar_usuarios(data):
     with open(USUARIOS_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
+
+MENSAJES_FILE = "mensajes.json"
+
+def cargar_mensajes():
+    if os.path.exists(MENSAJES_FILE):
+        with open(MENSAJES_FILE, "r", encoding="utf-8") as f:
+            contenido = f.read().strip()
+            return json.loads(contenido) if contenido else []
+    return []
+
+def guardar_mensajes(mensajes):
+    with open(MENSAJES_FILE, "w", encoding="utf-8") as f:
+        json.dump(mensajes, f, indent=2, ensure_ascii=False)
+
 
 # Usuarios de ejemplo
 usuarios = cargar_usuarios()
@@ -152,7 +166,7 @@ def perfil():
         "tiempo_trabajando": tiempo_trabajando,
         "tiempo_para_cumple": tiempo_para_cumple,
         "es_cumpleanios": es_cumple
-    }, mostrar_bienvenida=mostrar_bienvenida, tareas=user.get("tareas", []))
+    }, mostrar_bienvenida=mostrar_bienvenida, tareas=user.get("tareas", []), usuarios=usuarios)
 
 @app.route('/ver-perfil/<username>', methods=['GET', 'POST'])
 def ver_perfil(username):
@@ -233,6 +247,40 @@ def completar_tarea():
         guardar_usuarios(usuarios)
 
     return redirect(url_for('perfil'))
+
+
+@app.route('/mensajes', methods=['GET'])
+def obtener_mensajes():
+    emisor = session.get('username')
+    receptor = request.args.get('con')
+    if not emisor or not receptor:
+        return jsonify([])
+
+    mensajes = cargar_mensajes()
+    conversacion = [
+        m for m in mensajes
+        if (m['emisor'] == emisor and m['receptor'] == receptor) or
+           (m['emisor'] == receptor and m['receptor'] == emisor)
+    ]
+    return jsonify(conversacion)
+
+@app.route('/enviar-mensaje', methods=['POST'])
+def enviar_mensaje():
+    emisor = session.get('username')
+    receptor = request.form.get('receptor')
+    contenido = request.form.get('contenido')
+
+    if emisor and receptor and contenido:
+        mensajes = cargar_mensajes()
+        mensajes.append({
+            "emisor": emisor,
+            "receptor": receptor,
+            "contenido": contenido,
+            "timestamp": datetime.utcnow().isoformat()
+        })
+        guardar_mensajes(mensajes)
+        return jsonify({"status": "ok"})
+    return jsonify({"status": "error"}), 400
 
 
 @app.route('/perfiles')

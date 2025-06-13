@@ -1,0 +1,32 @@
+[
+  {
+    "emisor": "yukhio",
+    "receptor": "piratita?",
+    "contenido": "Hola",
+    "timestamp": "2025-06-13T19:24:10.532103"
+  },
+  {
+    "emisor": "yukhio",
+    "receptor": "piratita?",
+    "contenido": "Buenas",
+    "timestamp": "2025-06-13T19:25:23.946705"
+  },
+  {
+    "emisor": "elpepe",
+    "receptor": "yukhio",
+    "contenido": "Yo?",
+    "timestamp": "2025-06-13T19:25:39.584481"
+  },
+  {
+    "emisor": "yukhio",
+    "receptor": "elpepe",
+    "contenido": "Si pa",
+    "timestamp": "2025-06-13T19:27:52.268496"
+  },
+  {
+    "emisor": "elpepe",
+    "receptor": "yukhio",
+    "contenido": "Que pedo",
+    "timestamp": "2025-06-13T19:30:18.958431"
+  }
+]
