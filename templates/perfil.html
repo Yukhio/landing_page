@@ -306,6 +306,45 @@
             max-width: 80%;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
+
+        .badge {
+            background-color: #25D366;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 10px;
+            padding: 2px 6px;
+            margin-left: auto;
+        }
+
+        .chat-user-entry {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+
+        .chat-user-entry:hover {
+            background-color: #f8f9fa;
+        }
+
+        .chat-user-entry img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .chat-user-entry .badge {
+            background-color: red;
+            color: white;
+            font-size: 12px;
+            border-radius: 12px;
+            padding: 2px 6px;
+            margin-left: auto;
+        }
     </style>
 </head>
 
@@ -398,18 +437,6 @@
     <button class="chatbox-btn" onclick="toggleChatList()">💬</button>
 
     <!-- Lista de usuarios para chatear -->
-    <div class="chat-modal" id="chatUserList">
-        <header>Selecciona un usuario</header>
-        <div class="chat-users" id="chatUsers">
-            {% for uname, u in usuarios.items() if uname != session['username'] %}
-            <div onclick="abrirChat('{{ uname }}', '{{ u.nombre }}', '{{ url_for('static', filename=u.foto) }}')">
-                {{ u.nombre }}
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-
-    <!-- Conversación activa -->
     <div class="chat-modal" id="chatBox"
         style="display: none; width: 360px; height: 420px; flex-direction: column; position: fixed; bottom: 80px; right: 20px;">
         <header
@@ -432,13 +459,31 @@
         </form>
     </div>
 
+    <div class="chat-modal" id="chatUserList"
+        style="display: none; position: fixed; bottom: 80px; right: 20px; width: 300px; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); border-radius: 10px; overflow: hidden; z-index: 9999;">
+        <header style="background-color: #0d6efd; color: white; padding: 10px; font-weight: bold;">Selecciona un usuario
+        </header>
+        <div class="chat-users" id="chatUsers" style="max-height: 300px; overflow-y: auto;"></div>
+    </div>
+
+    <div class="chat-modal" id="chatUserList"
+        style="display: none; position: fixed; bottom: 80px; right: 20px; width: 300px; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); border-radius: 10px; overflow: hidden; z-index: 9999;">
+        <header style="background-color: #0d6efd; color: white; padding: 10px; font-weight: bold;">Selecciona un usuario
+        </header>
+        <div class="chat-users" id="chatUsers" style="max-height: 300px; overflow-y: auto;">
+            <!-- contenido generado dinámicamente -->
+        </div>
+    </div>
+
     <script>
         let receptorActual = null;
         let nombreReceptor = '';
+        let mensajesNuevos = {};
 
         function toggleChatList() {
             document.getElementById('chatUserList').style.display = 'block';
             document.getElementById('chatBox').style.display = 'none';
+            renderUserList();
         }
 
         function abrirChat(username, nombre, fotoURL) {
@@ -448,12 +493,14 @@
             document.getElementById('chatFoto').src = fotoURL;
             document.getElementById('chatUserList').style.display = 'none';
             document.getElementById('chatBox').style.display = 'flex';
+            mensajesNuevos[username] = 0;
             cargarConversacion();
         }
 
         function cerrarChat() {
             receptorActual = null;
             document.getElementById('chatBox').style.display = 'none';
+            toggleChatList();
         }
 
         function cargarConversacion() {
@@ -493,6 +540,46 @@
             e.preventDefault();
             enviarMensaje();
         }
+
+        function renderUserList() {
+            const usuarios = {{ usuarios | tojson | safe
+        }};
+        const current = '{{ session["username"] }}';
+        const container = document.getElementById('chatUsers');
+        container.innerHTML = '';
+
+        for (const uname in usuarios) {
+            if (uname === current) continue;
+            const user = usuarios[uname];
+            const unreadCount = mensajesNuevos[uname] || 0;
+
+            const div = document.createElement('div');
+            div.className = 'chat-user-entry';
+            div.onclick = () => abrirChat(uname, user.nombre, `/static/${user.foto}`);
+
+            div.innerHTML = `
+            <img src="/static/${user.foto}" alt="${user.nombre}">
+            <span>${user.nombre}</span>
+            ${unreadCount > 0 ? `<span class="badge">${unreadCount}</span>` : ''}
+        `;
+
+            container.appendChild(div);
+        }
+}
+
+        setInterval(() => {
+            const current = '{{ session["username"] }}';
+            fetch('/mensajes')
+                .then(res => res.json())
+                .then(all => {
+                    all.forEach(m => {
+                        if (m.receptor === current) {
+                            mensajesNuevos[m.emisor] = (mensajesNuevos[m.emisor] || 0) + 1;
+                        }
+                    });
+                    renderUserList();
+                });
+        }, 100000);
     </script>
     <script>
         document.querySelectorAll("form[action='/completar-tarea'], form[action='/eliminar-tarea']").forEach(form => {
@@ -500,6 +587,17 @@
                 setTimeout(() => location.reload(), 100);
             });
         });
+
+        // Recarga la página al completar o eliminar tarea
+        function attachTareaActions() {
+            document.querySelectorAll("form[action='/completar-tarea'], form[action='/eliminar-tarea']").forEach(form => {
+                form.addEventListener('submit', function () {
+                    setTimeout(() => location.reload(), 100);
+                });
+            });
+        }
+
+        window.onload = attachTareaActions;
     </script>
 
     <script>
@@ -522,20 +620,6 @@
             modal.classList.remove('show');
         });
     </script>
-    {% for i in range(tareas|length) %}
-    {% set tarea = tareas[i] %}
-    {% if not tarea.completada %}
-    <!-- aquí va el bloque que muestra la tarea pendiente -->
-    <form method="POST" action="/completar-tarea">
-        <input type="hidden" name="indice" value="{{ i }}">
-        <button type="submit">✓</button>
-    </form>
-    <form method="POST" action="/eliminar-tarea">
-        <input type="hidden" name="indice" value="{{ i }}">
-        <button type="submit">Eliminar</button>
-    </form>
-    {% endif %}
-    {% endfor %}
 </body>
 
 </html>

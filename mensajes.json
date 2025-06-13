@@ -64,5 +64,35 @@
     "receptor": "elpepe",
     "contenido": "O no",
     "timestamp": "2025-06-13T20:05:36.724937"
+  },
+  {
+    "emisor": "yukhio",
+    "receptor": "sofia",
+    "contenido": "Hola",
+    "timestamp": "2025-06-13T22:03:07.465721"
+  },
+  {
+    "emisor": "yukhio",
+    "receptor": "sofia",
+    "contenido": "asdad",
+    "timestamp": "2025-06-13T22:08:37.071848"
+  },
+  {
+    "emisor": "sofia",
+    "receptor": "yukhio",
+    "contenido": "Hola",
+    "timestamp": "2025-06-13T22:09:02.972294"
+  },
+  {
+    "emisor": "yukhio",
+    "receptor": "elpepe",
+    "contenido": "Buenas",
+    "timestamp": "2025-06-13T22:28:15.144270"
+  },
+  {
+    "emisor": "elpepe",
+    "receptor": "yukhio",
+    "contenido": "Si",
+    "timestamp": "2025-06-13T22:28:25.098389"
   }
 ]

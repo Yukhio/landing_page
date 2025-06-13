@@ -11,28 +11,14 @@
     "inicio_trabajo": "2024-12-02",
     "tareas": [
       {
-        "titulo": "Hola",
+        "titulo": "aaaa",
         "subtareas": [
           {
-            "titulo": "Si",
-            "descripcion": "No"
+            "titulo": "aaaaaaa",
+            "descripcion": "aaaaaa"
           }
         ],
         "completada": true
-      },
-      {
-        "titulo": "sad",
-        "subtareas": [
-          {
-            "titulo": "asd",
-            "descripcion": "asd"
-          },
-          {
-            "titulo": "asd",
-            "descripcion": "asd"
-          }
-        ],
-        "completada": false
       }
     ]
   },

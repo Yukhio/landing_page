@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify, send_file
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 import json
@@ -18,7 +18,7 @@ def allowed_file(filename):
 # Crea la carpeta si no existe
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-USUARIOS_FILE = "usuarios.json"
+USUARIOS_FILE = "/landing_page/usuarios.json"
 
 def cargar_usuarios():
     if os.path.exists(USUARIOS_FILE):
@@ -34,7 +34,7 @@ def guardar_usuarios(data):
     with open(USUARIOS_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
 
-MENSAJES_FILE = "mensajes.json"
+MENSAJES_FILE = "/landing_page/mensajes.json"
 
 def cargar_mensajes():
     if os.path.exists(MENSAJES_FILE):
@@ -288,6 +288,20 @@ def enviar_mensaje():
         guardar_mensajes(mensajes)
         return jsonify({"status": "ok"})
     return jsonify({"status": "error"}), 400
+
+
+if not os.path.exists(USUARIOS_FILE):
+    with open(USUARIOS_FILE, "w", encoding="utf-8") as f:
+        json.dump({}, f)
+
+if not os.path.exists(MENSAJES_FILE):
+    with open(MENSAJES_FILE, "w", encoding="utf-8") as f:
+        json.dump([], f)
+
+
+@app.route('/descargar/usuarios')
+def descargar_usuarios():
+    return send_file(USUARIOS_FILE, as_attachment=True)
 
 
 @app.route('/perfiles')
