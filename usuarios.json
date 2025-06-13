@@ -91,5 +91,17 @@
         "completada": true
       }
     ]
+  },
+  "sofia": {
+    "password": "123",
+    "nombre": "Sofía de la Vega",
+    "puesto": "Funda de Dustin",
+    "ubicacion": "Villa de Álvarez, Colima, México",
+    "email": "sofia@sofia.com",
+    "telefono": "31221231",
+    "fecha_nacimiento": "2002-07-10",
+    "inicio_trabajo": "2006-10-16",
+    "foto": "img/perfiles/sofia_Captura_de_pantalla_2025-06-13_152700.png",
+    "tareas": []
   }
 }

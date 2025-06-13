@@ -11,6 +11,9 @@ app.secret_key = 'clave-secreta-segura'  # necesaria para usar sesiones
 UPLOAD_FOLDER = 'static/img/perfiles'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Crea la carpeta si no existe
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
