@@ -20,8 +20,12 @@ USUARIOS_FILE = "usuarios.json"
 def cargar_usuarios():
     if os.path.exists(USUARIOS_FILE):
         with open(USUARIOS_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
+            data = json.load(f)
+            for u in data.values():
+                u.setdefault("tareas", [])
+            return data
     return {}
+
 
 def guardar_usuarios(data):
     with open(USUARIOS_FILE, "w", encoding="utf-8") as f:
@@ -129,6 +133,8 @@ def perfil():
         titulo = request.form.get("titulo")
         descripcion = request.form.get("descripcion")
         if titulo and descripcion:
+            if "tareas" not in usuarios[username]:
+                usuarios[username]["tareas"] = []
             usuarios[username]["tareas"].append({
                 "titulo": titulo,
                 "descripcion": descripcion,
@@ -136,6 +142,7 @@ def perfil():
             })
             guardar_usuarios(usuarios)
             return redirect(url_for("perfil"))
+
 
     return render_template("perfil.html", person={
         **user,
@@ -146,6 +153,58 @@ def perfil():
         "tiempo_para_cumple": tiempo_para_cumple,
         "es_cumpleanios": es_cumple
     }, mostrar_bienvenida=mostrar_bienvenida, tareas=user.get("tareas", []))
+
+@app.route('/ver-perfil/<username>', methods=['GET', 'POST'])
+def ver_perfil(username):
+    if username not in usuarios:
+        return redirect(url_for('lista_perfiles'))
+
+    user = usuarios[username]
+
+    hoy = date.today()
+    fecha_nacimiento = datetime.strptime(user['fecha_nacimiento'], "%Y-%m-%d").date()
+    inicio_trabajo = datetime.strptime(user['inicio_trabajo'], "%Y-%m-%d").date()
+
+    edad = hoy.year - fecha_nacimiento.year - ((hoy.month, hoy.day) < (fecha_nacimiento.month, fecha_nacimiento.day))
+    fecha_formateada = fecha_nacimiento.strftime("%d/%m/%Y")
+    inicio_formateado = inicio_trabajo.strftime("%d/%m/%Y")
+
+    diferencia = relativedelta(hoy, inicio_trabajo)
+    partes = []
+    if diferencia.years:
+        partes.append(f"{diferencia.years} año{'s' if diferencia.years > 1 else ''}")
+    if diferencia.months:
+        partes.append(f"{diferencia.months} mes{'es' if diferencia.months > 1 else ''}")
+    if diferencia.days and not diferencia.years:
+        partes.append(f"{diferencia.days} día{'s' if diferencia.days > 1 else ''}")
+    tiempo_trabajando = ", ".join(partes) if partes else "Hoy"
+
+    proximo = fecha_nacimiento.replace(year=hoy.year)
+    if proximo < hoy:
+        proximo = proximo.replace(year=hoy.year + 1)
+    delta = relativedelta(proximo, hoy)
+    es_cumple = hoy.month == fecha_nacimiento.month and hoy.day == fecha_nacimiento.day
+    tiempo_para_cumple = (
+        "¡Feliz cumpleaños!" if es_cumple
+        else f"Faltan {delta.months} meses, {delta.days} días para tu próximo cumpleaños"
+    )
+
+    return render_template("perfil.html", person={
+        **user,
+        "edad": edad,
+        "fecha_nacimiento": fecha_formateada,
+        "inicio_trabajo": inicio_formateado,
+        "tiempo_trabajando": tiempo_trabajando,
+        "tiempo_para_cumple": tiempo_para_cumple,
+        "es_cumpleanios": es_cumple
+    }, mostrar_bienvenida=False, tareas=user.get("tareas", []))
+
+@app.route('/cambiar-perfil/<username>')
+def cambiar_perfil(username):
+    if username in usuarios:
+        session['username'] = username
+        session['show_welcome'] = True
+    return redirect(url_for('perfil'))
 
 
 @app.route('/eliminar-tarea', methods=['POST'])

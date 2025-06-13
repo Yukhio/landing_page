@@ -11,8 +11,18 @@
     "inicio_trabajo": "2024-12-02",
     "tareas": [
       {
-        "titulo": "Desarrollo prueba",
-        "descripcion": "Datos",
+        "titulo": "Asignar las ventas al lote de ventas",
+        "descripcion": "Ya casi queda",
+        "completada": true
+      },
+      {
+        "titulo": "Nueva homework prueb",
+        "descripcion": "Si",
+        "completada": true
+      },
+      {
+        "titulo": "as",
+        "descripcion": "asd",
         "completada": true
       }
     ]
@@ -26,7 +36,19 @@
     "email": "a@a.com",
     "telefono": "1312314212",
     "fecha_nacimiento": "2025-06-12",
-    "inicio_trabajo": "2024-01-12"
+    "inicio_trabajo": "2024-01-12",
+    "tareas": [
+      {
+        "titulo": "Nueva homework prueba",
+        "descripcion": "Sipirili",
+        "completada": true
+      },
+      {
+        "titulo": "Nueva o no",
+        "descripcion": "Si",
+        "completada": true
+      }
+    ]
   },
   "piratita?": {
     "password": "mencho?",
@@ -37,6 +59,13 @@
     "telefono": "3123123123",
     "fecha_nacimiento": "1997-12-05",
     "inicio_trabajo": "2003-06-16",
-    "foto": "img/perfiles/piratita_Piratita_2.JPG"
+    "foto": "img/perfiles/piratita_Piratita_2.JPG",
+    "tareas": [
+      {
+        "titulo": "sdfs",
+        "descripcion": "sfs",
+        "completada": false
+      }
+    ]
   }
 }

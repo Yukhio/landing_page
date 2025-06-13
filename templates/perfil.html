@@ -2,142 +2,29 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi perfil</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f2f5;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f8f9fa;
             margin: 0;
-            padding: 0;
         }
 
-        .top-buttons {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            padding: 20px;
-        }
-
-        .btn-ver-todos,
-        .btn-logout {
-            padding: 8px 14px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .btn-ver-todos {
-            background-color: #17a2b8;
-            color: white;
-        }
-
-        .btn-logout {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        .main-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .foto-usuario {
-            margin-top: 30px;
-        }
-
-        .foto-usuario img {
-            width: 220px;
-            height: auto;
-            border-radius: 12px;
-            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .main-layout {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .tarea-card,
-        .formulario-tarea {
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 320px;
-        }
-
-        .tarea-card h3,
-        .formulario-tarea h3 {
-            margin-top: 0;
-        }
-
-        .tarea-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #eee;
-            margin-bottom: 12px;
-            padding-bottom: 10px;
-        }
-
-        .tarea-info {
-            flex: 1;
-        }
-
-        .tarea-item.completed {
-            background-color: #e6ffe6;
-            text-decoration: line-through;
-            color: gray;
-        }
-
-        .tarea-item strong {
-            display: block;
-        }
-
-        .eliminar-btn,
-        .completar-btn {
-            margin-left: 5px;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            border: none;
-            cursor: pointer;
-        }
-
-        .eliminar-btn {
-            background: red;
-            color: white;
-        }
-
-        .completar-btn {
-            background: green;
-            color: white;
-        }
-
-        .formulario-tarea input,
-        .formulario-tarea textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 12px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-        }
-
-        .formulario-tarea button {
-            width: 100%;
-            padding: 10px;
-            background: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-weight: bold;
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: #d1e7dd;
+            color: #0f5132;
+            padding: 12px 18px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            animation: fadeOut 5s ease-in-out forwards;
+            font-size: 16px;
+            z-index: 999;
         }
 
         @keyframes fadeOut {
@@ -152,6 +39,116 @@
                 display: none;
             }
         }
+
+        .top-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 20px;
+        }
+
+        .top-buttons a {
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .btn-ver-todos {
+            background-color: #0dcaf0;
+            color: white;
+        }
+
+        .btn-logout {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .foto-usuario img {
+            width: 200px;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .main-layout {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+            width: 360px;
+        }
+
+        .card h3 {
+            margin-top: 0;
+        }
+
+        .tarea-item {
+            margin-bottom: 16px;
+            padding: 12px;
+            border-radius: 10px;
+            background-color: #f1fdf3;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .tarea-item.completed {
+            background-color: #e0f7e0;
+            text-decoration: line-through;
+            color: gray;
+        }
+
+        .subtarea {
+            margin-left: 10px;
+            padding: 6px 10px;
+            border-left: 3px solid #28a745;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+        }
+
+        .formulario-tarea ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .formulario-tarea li {
+            margin-bottom: 8px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .formulario-tarea input[type="text"] {
+            flex: 1;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .formulario-tarea button {
+            padding: 10px;
+            width: 100%;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            border-radius: 6px;
+        }
     </style>
 </head>
 
@@ -162,20 +159,13 @@
     </div>
 
     {% if mostrar_bienvenida %}
-    <div id="bienvenida"
-        style="text-align: center; background-color: #d1e7dd; color: #0f5132; padding: 15px; font-size: 18px; border-radius: 8px; margin: 10px;">
-        ¡Bienvenido, {{ person.nombre }}!
-    </div>
+    <div class="notification"> ¡Bienvenido, {{ person.nombre }}! </div>
     {% endif %}
 
     {% if person.es_cumpleanios %}
     <script>
         window.onload = () => {
-            confetti({
-                particleCount: 150,
-                spread: 100,
-                origin: { y: 0.6 }
-            });
+            confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 } });
         };
     </script>
     {% endif %}
@@ -187,38 +177,54 @@
         </div>
 
         <div class="main-layout">
-            <div class="tarea-card">
+            <div class="card">
                 <h3>Tareas guardadas</h3>
                 {% for tarea in tareas %}
                 <div class="tarea-item {% if tarea.completada %}completed{% endif %}">
-                    <div class="tarea-info">
-                        <strong>{{ tarea.titulo }}</strong>
-                        <p>{{ tarea.descripcion }}</p>
+                    <strong>{{ tarea.titulo }}</strong>
+                    {% for subtitulo in tarea.subtareas %}
+                    <div class="subtarea">
+                        <strong>{{ subtitulo.titulo }}</strong>: {{ subtitulo.descripcion }}
                     </div>
+                    {% endfor %}
                     <form method="POST" action="{{ url_for('completar_tarea') }}">
                         <input type="hidden" name="indice" value="{{ loop.index0 }}">
-                        <button type="submit" class="completar-btn">✓</button>
+                        <button type="submit">✓</button>
                     </form>
                     <form method="POST" action="{{ url_for('eliminar_tarea') }}">
                         <input type="hidden" name="indice" value="{{ loop.index0 }}">
-                        <button type="submit" class="eliminar-btn">Eliminar</button>
+                        <button type="submit">Eliminar</button>
                     </form>
                 </div>
-                {% else %}
-                <p>No hay tareas todavía.</p>
-                {% endfor %}
+                {% else %}<p>No hay tareas todavía.</p>{% endfor %}
             </div>
 
-            <div class="formulario-tarea">
+            <div class="card formulario-tarea">
                 <h3>Asignar nueva tarea</h3>
-                <form method="POST">
-                    <input type="text" name="titulo" placeholder="Título" required>
-                    <textarea name="descripcion" placeholder="Descripción" required></textarea>
+                <form method="POST" id="formTarea">
+                    <input type="text" name="titulo" placeholder="Título de la tarea" required><br>
+                    <ul id="subtareas">
+                        <li><input type="text" name="subtitulo[]" placeholder="Subtítulo">
+                            <input type="text" name="descripcion[]" placeholder="Descripción">
+                        </li>
+                    </ul>
+                    <button type="button" onclick="agregarSubtarea()">+ Agregar Subtítulo</button>
+                    <br><br>
                     <button type="submit">Guardar tarea</button>
                 </form>
             </div>
         </div>
     </div>
+
+    <script>
+        function agregarSubtarea() {
+            const ul = document.getElementById('subtareas');
+            const li = document.createElement('li');
+            li.innerHTML = `<input type="text" name="subtitulo[]" placeholder="Subtítulo">
+                            <input type="text" name="descripcion[]" placeholder="Descripción">`;
+            ul.appendChild(li);
+        }
+    </script>
 </body>
 
 </html>

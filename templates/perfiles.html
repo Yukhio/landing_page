@@ -74,14 +74,16 @@
     <h1>Perfiles registrados</h1>
     <div class="grid">
         {% for username, user in usuarios.items() %}
-        <div class="card">
-            <img src="{{ url_for('static', filename=user.foto) }}" alt="Foto de {{ user.nombre }}">
-            <h3>{{ user.nombre }}</h3>
-            <p><strong>Puesto:</strong> {{ user.puesto }}</p>
-            <p><strong>Ubicación:</strong> {{ user.ubicacion }}</p>
-            <p><strong>Email:</strong> {{ user.email }}</p>
-            <p><strong>Teléfono:</strong> {{ user.telefono }}</p>
-        </div>
+        <a href="{{ url_for('cambiar_perfil', username=username) }}"" style=" text-decoration: none; color: inherit;">
+            <div class="card">
+                <img src="{{ url_for('static', filename=user.foto) }}" alt="Foto de {{ user.nombre }}">
+                <h3>{{ user.nombre }}</h3>
+                <p><strong>Puesto:</strong> {{ user.puesto }}</p>
+                <p><strong>Ubicación:</strong> {{ user.ubicacion }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Teléfono:</strong> {{ user.telefono }}</p>
+            </div>
+        </a>
         {% endfor %}
     </div>
 </body>
