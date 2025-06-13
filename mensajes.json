@@ -28,5 +28,29 @@
     "receptor": "yukhio",
     "contenido": "Que pedo",
     "timestamp": "2025-06-13T19:30:18.958431"
+  },
+  {
+    "emisor": "yukhio",
+    "receptor": "elpepe",
+    "contenido": "Hola buenas",
+    "timestamp": "2025-06-13T19:38:35.483311"
+  },
+  {
+    "emisor": "yukhio",
+    "receptor": "elpepe",
+    "contenido": "Hola",
+    "timestamp": "2025-06-13T19:41:58.122298"
+  },
+  {
+    "emisor": "yukhio",
+    "receptor": "elpepe",
+    "contenido": "Pero si me vas a contestar?",
+    "timestamp": "2025-06-13T19:42:04.673522"
+  },
+  {
+    "emisor": "elpepe",
+    "receptor": "yukhio",
+    "contenido": "Muy probablemente si xd",
+    "timestamp": "2025-06-13T19:42:14.735560"
   }
 ]
