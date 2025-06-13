@@ -31,6 +31,7 @@ def cargar_usuarios():
 
 
 def guardar_usuarios(data):
+    os.makedirs(os.path.dirname(USUARIOS_FILE), exist_ok=True)
     with open(USUARIOS_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
 
@@ -44,6 +45,7 @@ def cargar_mensajes():
     return []
 
 def guardar_mensajes(mensajes):
+    os.makedirs(os.path.dirname(USUARIOS_FILE), exist_ok=True)
     with open(MENSAJES_FILE, "w", encoding="utf-8") as f:
         json.dump(mensajes, f, indent=2, ensure_ascii=False)
 
@@ -291,10 +293,12 @@ def enviar_mensaje():
 
 
 if not os.path.exists(USUARIOS_FILE):
+    os.makedirs(os.path.dirname(USUARIOS_FILE), exist_ok=True)
     with open(USUARIOS_FILE, "w", encoding="utf-8") as f:
         json.dump({}, f)
 
 if not os.path.exists(MENSAJES_FILE):
+    os.makedirs(os.path.dirname(USUARIOS_FILE), exist_ok=True)
     with open(MENSAJES_FILE, "w", encoding="utf-8") as f:
         json.dump([], f)
 
